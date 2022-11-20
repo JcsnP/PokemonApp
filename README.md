@@ -71,10 +71,9 @@ export default class Main extends Component {
 }
 ```
 
-### สร้างส่วนสำหรับการค้นหาและแสดงผล Pokemon
+### สร้างส่วนสำหรับการค้นหาและแสดงผล Pokemon (นำไปใส่ไว้ใน Render)
 ```js
-render() {
- const{ name,pic,types,desc,searchInput,isLoading } = this.state
+const{ name,pic,types,desc,searchInput,isLoading } = this.state
  return (
      <SafeAreaView style={styles.wrapper}>
         <View style={styles.container}>
@@ -107,7 +106,6 @@ render() {
         </View>
      </SafeAreaView>
  );
-}
 ```
 
 ### สร้างฟังก์ชันสำหรับการค้นหา Pokemon
