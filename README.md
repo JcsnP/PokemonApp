@@ -9,6 +9,9 @@ Workshop
  4. ใช้คำสั่ง `npx expo start` เพื่อรันโปรเจค
 
 # เริ่มต้นสร้างโปรเจค
+<img width="197" alt="image" src="https://user-images.githubusercontent.com/37466531/202900153-e71e4ad9-b056-441c-8207-d84a36a6cad5.png">
+โครงสร้างไฟล์และโฟลเดอร์ต่างๆ
+
 ## 1. Create a new expo app
 `npx create-expo-app PokemonApp`
 ## 2. Install Packages and Dependencies
@@ -24,18 +27,19 @@ Workshop
 ## 3. Coding
 ## App.js
 ```js
-  import { StatusBar } from 'expo-status-bar';
-  import { StyleSheet, Text, View ,SafeAreaView} from 'react-native';
-  import Main from './src/Main';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View ,SafeAreaView} from 'react-native';
+import Main from './src/Main';
 
-  export default function App() {
-    return (
-      <>
-        <StatusBar />
-        <Main/>
-      </>
-    );
-  }
+export default function App() {
+  return (
+    <>
+      <StatusBar />
+      //importหน้าMainเป็นหน้าเเรกเมื่อเปิด App.js
+      <Main/>
+    </>
+  );
+}
 ```
 
 ## Main.js
@@ -74,68 +78,68 @@ export default class Main extends Component {
 ### สร้างส่วนสำหรับการค้นหาและแสดงผล Pokemon (นำไปใส่ไว้ใน Render)
 ```js
 const{ name,pic,types,desc,searchInput,isLoading } = this.state
- return (
-     <SafeAreaView style={styles.wrapper}>
-        <View style={styles.container}>
-        <Image style={styles.image} source={{uri: 'https://user-images.githubusercontent.com/37466531/202855683-08bb0351-2ac9-486c-8424-9e68b8f71ece.png'}} />
-             <View style={styles.headContainer}>
-                 <View style={styles.textInpuTContainer}>
-                     <TextInput style={styles.textInput}
-                         placeholder='Pokemon Name'
-                         onChangeText={(searchInput)=> this.setState({searchInput})}
-                         onSubmitEditing={this.searchPokemon}
-                         value={this.state.searchInput}
-                         clearButtonMode="always"
-                     />
-                 </View>
-                 <View style={styles.buttonContainer}>
-                     <TouchableOpacity style={styles.searchButton}
-                         onPress={this.searchPokemon}
-                     >
-                         <Text style={{ color: "white", fontWeight: 'bold', fontSize: 19 }}>SEARCH</Text>
-                     </TouchableOpacity>
-                 </View>
-             </View>
-             <View style={styles.mainContainer}>
-                 {isLoading && <ActivityIndicator size="large" color="green"/>}
+return (
+    <SafeAreaView style={styles.wrapper}>
+       <View style={styles.container}>
+       <Image style={styles.image} source={{uri: 'https://user-images.githubusercontent.com/37466531/202855683-08bb0351-2ac9-486c-8424-9e68b8f71ece.png'}} />
+            <View style={styles.headContainer}>
+                <View style={styles.textInpuTContainer}>
+                    <TextInput style={styles.textInput}
+                        placeholder='Pokemon Name'
+                        onChangeText={(searchInput)=> this.setState({searchInput})}
+                        onSubmitEditing={this.searchPokemon}
+                        value={this.state.searchInput}
+                        clearButtonMode="always"
+                    />
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.searchButton}
+                        onPress={this.searchPokemon}
+                    >
+                        <Text style={{ color: "white", fontWeight: 'bold', fontSize: 19 }}>SEARCH</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={styles.mainContainer}>
+                {isLoading && <ActivityIndicator size="large" color="green"/>}
 
-                 {!isLoading && (
-                     <Pokemon name={name} pic={pic} types={types} desc={desc}/>
-                 )}
-             </View>
-        </View>
-     </SafeAreaView>
- );
+                {!isLoading && (
+                    <Pokemon name={name} pic={pic} types={types} desc={desc}/>
+                )}
+            </View>
+       </View>
+    </SafeAreaView>
+);
 ```
 
 ### สร้างฟังก์ชันสำหรับการค้นหา Pokemon
 ```js
 searchPokemon = async()=>{
-  try{
-      // ซ่อน keyboard หลังจากผู้ใช้กดปุ่มค้นหา
-      Keyboard.dismiss()
-      // รับไอดีของโปเกมอนตัวนั้นมาจากชื่อที่กรอกไปใน testInput
-      const pokemonID = pokemon.getId((this.state.searchInput.charAt(0).toUpperCase() + this.state.searchInput.slice(1)))
+    try{
+        // ซ่อน keyboard หลังจากผู้ใช้กดปุ่มค้นหา
+        Keyboard.dismiss()
+        // รับไอดีของโปเกมอนตัวนั้นมาจากชื่อที่กรอกไปใน testInput
+        const pokemonID = pokemon.getId((this.state.searchInput.charAt(0).toUpperCase() + this.state.searchInput.slice(1)))
 
-      this.setState({isLoading:true})
+        this.setState({isLoading:true})
 
-      //ยิงget request
-      const { data: pokemonData} = await axios.get(`${POKE_API_URL}/pokemon/${pokemonID}`)
-      //เข้าถึงApiไปยังpathpokemonละดึงIDมา
-      const { data: pokemonSpecieData} = await axios.get(`${POKE_API_URL}/pokemon-species/${pokemonID}`)
+        //ยิงget request
+        const { data: pokemonData} = await axios.get(`${POKE_API_URL}/pokemon/${pokemonID}`)
+        //เข้าถึงApiไปยังpathpokemonละดึงIDมา
+        const { data: pokemonSpecieData} = await axios.get(`${POKE_API_URL}/pokemon-species/${pokemonID}`)
 
 
-      //ดึงข้อมูล DATA
-      const { name, sprites, types}= pokemonData
-      const { flavor_text_entries }= pokemonSpecieData
+        //ดึงข้อมูล DATA
+        const { name, sprites, types}= pokemonData
+        const { flavor_text_entries }= pokemonSpecieData
 
-      this.setState({
-          name,
-          pic : sprites.front_default,
-          types: this.getTypes(types),
-          desc: this.getDescription(flavor_text_entries),
-          isLoading: false
-      })
+        this.setState({
+            name,
+            pic : sprites.front_default,
+            types: this.getTypes(types),
+            desc: this.getDescription(flavor_text_entries),
+            isLoading: false
+        }) 
     }catch(err){
         Alert.alert('ข้อผิดพลาด','ไม่พบข้อมูล POKEMON ดังกล่าว');
     }
@@ -145,8 +149,8 @@ searchPokemon = async()=>{
 ### สร้างฟังก์ชันสำหรับการหาประเภทของ Pokemon
 ```js
 getTypes = (types)=> types.map(({slot,type}) => ({
-  id:slot,
-  name: type.name
+    id:slot,
+    name: type.name
 }))
 ```
 
@@ -244,6 +248,7 @@ export default Pokemon = ({name,pic, types, desc})=>{
 
 ### ตกแต่งหน้าสำหรับการแสดงผล Pokemon
 ```js
+//style ตกเเต่งหน้าPokemon
 const styles = StyleSheet.create({
     mainDetails:{
         width: '100%',
@@ -361,7 +366,7 @@ pokemon-npm
 https://www.npmjs.com/package/pokemon
 
 axios-npm
-[axios - npm (npmjs.com)](https://www.npmjs.com/package/axios)
+https://www.npmjs.com/package/axios
 
 สอน React Native สร้างแอป Pokemon Search
 https://youtu.be/QvkjcWhuHEQ
