@@ -35,7 +35,6 @@ export default function App() {
   return (
     <>
       <StatusBar />
-      //importหน้าMainเป็นหน้าเเรกเมื่อเปิด App.js
       <Main/>
     </>
   );
